@@ -10,6 +10,7 @@ namespace DocSearch
     class Controller
     {
         PorterStemmer stemmer;
+        TFIDF tfidf;
         List<string> terms;
         List<Tuple<string, List<string>>> documents;
 
@@ -98,9 +99,28 @@ namespace DocSearch
             }
         }
 
-        public void Analyse()
+        public string GetDocumentsSimilarity()
         {
+            var rank = CalculateDocumentsSimilarity();
+            var result = "";
+            foreach (var record in rank)
+            {
+                result += record.Item2 + "\n" + record.Item1 + "\n\n";
+            }
+            return result;
+        }
 
+        private List<Tuple<string, double>> CalculateDocumentsSimilarity()
+        {
+            tfidf = new TFIDF(terms, documents);
+            var similarity = tfidf.CalculateSimilarity();
+
+            var documentsRank = new List<Tuple<string, double>>();
+            for (int i = 0; i < documents.Count; i++)
+            {
+                documentsRank.Add(new Tuple<string, double>(documents[i].Item1, similarity[i]));
+            }
+            return documentsRank.OrderByDescending(doc => doc.Item2).ToList();
         }
     }
 }

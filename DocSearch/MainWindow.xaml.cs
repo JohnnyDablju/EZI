@@ -52,7 +52,7 @@ namespace DocSearch
         {
             if (!String.IsNullOrWhiteSpace(TermsTextBox.Text) && !String.IsNullOrWhiteSpace(DocumentsTextBox.Text))
             {
-                controller.Analyse();
+                PreviewTextBox.Text = controller.GetDocumentsSimilarity();
             }
             else
             {
