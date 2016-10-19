@@ -74,11 +74,11 @@ namespace DocSearch
                     {
                         if (termsIDF[i] > 0)
                         {
-                            documentIDF.Add((documentIDF[i] / max) * termsIDF[i]);
+                            documentIDF[i] = (documentIDF[i] / max) * termsIDF[i];
                         }
                         else
                         {
-                            documentIDF.Add(0);
+                            documentIDF[i] = 0;
                         }
                     }
                 }

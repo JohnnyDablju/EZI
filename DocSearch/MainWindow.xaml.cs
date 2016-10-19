@@ -53,6 +53,7 @@ namespace DocSearch
             if (!String.IsNullOrWhiteSpace(TermsTextBox.Text) && !String.IsNullOrWhiteSpace(DocumentsTextBox.Text) && !String.IsNullOrWhiteSpace(questionTextBox.Text))
             {
                 controller.LoadQuestion(questionTextBox.Text);
+                PreviewTextBox.Text = String.Empty;
                 PreviewTextBox.Text = controller.GetDocumentsSimilarity();
             }
             else
