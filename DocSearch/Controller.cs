@@ -13,12 +13,15 @@ namespace DocSearch
         TFIDF tfidf;
         List<string> terms;
         List<Tuple<string, List<string>>> documents;
+        List<string> question;
+        List<string> questionList;
 
         public Controller()
         {
             stemmer = new PorterStemmer();
             terms = new List<string>();
             documents = new List<Tuple<string, List<string>>>();
+            question = new List<string>();
         }
 
         private string CleanAndStemm(string word)
@@ -61,6 +64,15 @@ namespace DocSearch
                         terms.Add(word);
                     }
                 }
+            }
+        }
+
+        public void LoadQuestion(string questionText)
+        {
+            questionList = questionText.Split(' ').ToList();
+            foreach(var q in questionList)
+            {
+                question.Add(CleanAndStemm(q));
             }
         }
 
@@ -112,7 +124,7 @@ namespace DocSearch
 
         private List<Tuple<string, double>> CalculateDocumentsSimilarity()
         {
-            tfidf = new TFIDF(terms, documents);
+            tfidf = new TFIDF(terms, documents, question);
             var similarity = tfidf.CalculateSimilarity();
 
             var documentsRank = new List<Tuple<string, double>>();

@@ -50,13 +50,14 @@ namespace DocSearch
 
         private void AnalyseButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!String.IsNullOrWhiteSpace(TermsTextBox.Text) && !String.IsNullOrWhiteSpace(DocumentsTextBox.Text))
+            if (!String.IsNullOrWhiteSpace(TermsTextBox.Text) && !String.IsNullOrWhiteSpace(DocumentsTextBox.Text) && !String.IsNullOrWhiteSpace(questionTextBox.Text))
             {
+                controller.LoadQuestion(questionTextBox.Text);
                 PreviewTextBox.Text = controller.GetDocumentsSimilarity();
             }
             else
             {
-                MessageBox.Show("Please load documents and terms first!");
+                MessageBox.Show("Please load question, documents and terms first!");
             }
         }
 
@@ -68,6 +69,11 @@ namespace DocSearch
         private void DocumentsPreviewButton_Click(object sender, RoutedEventArgs e)
         {
             PreviewTextBox.Text = controller.GetDocumentsPreview();
+        }
+
+        private void questionTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }
