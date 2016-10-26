@@ -12,45 +12,27 @@ namespace DocSearch
         private List<List<double>> documentsIDF;
         private List<string> terms;
         private List<double> termsIDF;
-        private List<string> question;
-        private List<double> questionIDF;
+        private List<string> query;
+        private List<double> queryIDF;
 
         public TFIDF(List<string> terms, List<Tuple<string, List<string>>> documents, List<string> question)
         {
             this.terms = terms;
             this.documents = documents.Select(d => d.Item2).ToList();
-            this.question = question;
+            this.query = question;
             termsIDF = new List<double>();
             documentsIDF = new List<List<double>>();
-            questionIDF = new List<double>();
-        }
-
-        private double FindMax(List<double> list)
-        {
-            double max = 0;
-            foreach(var item in list)
-            {
-                if(item > max)
-                {
-                    max = item;
-                }
-            }
-            return max;
+            queryIDF = new List<double>();
         }
 
         private void CalculateVectors()
         {
-
-            double max = 0;
-            double tf;
-
-
             foreach (var term in terms)
             {
                 double numberOfDocsContainingTerm = documents.Where(d => d.Contains(term)).Count();
-                if(numberOfDocsContainingTerm > 0)
+                if (numberOfDocsContainingTerm > 0)
                 {
-                    termsIDF.Add(Math.Log((double)documents.Count / (numberOfDocsContainingTerm)));
+                    termsIDF.Add(Math.Log10((double)documents.Count / (numberOfDocsContainingTerm)));
                 }
                 else
                 {
@@ -63,18 +45,16 @@ namespace DocSearch
                 var documentIDF = new List<double>();
                 for (var i = 0; i < terms.Count; i++)
                 {
-                    tf = document.Where(d => d == terms[i]).Count();
-                    documentIDF.Add(tf);
+                    documentIDF.Add(document.Where(d => d == terms[i]).Count());
                 }
 
-                max = FindMax(documentIDF);
-                if (max > 0)
+                if (documentIDF.Max() > 0)
                 {
                     for (var i = 0; i < terms.Count; i++)
                     {
                         if (termsIDF[i] > 0)
                         {
-                            documentIDF[i] = (documentIDF[i] / max) * termsIDF[i];
+                            documentIDF[i] = (documentIDF[i] / documentIDF.Max()) * termsIDF[i];
                         }
                         else
                         {
@@ -88,49 +68,44 @@ namespace DocSearch
 
             for (var i = 0; i < terms.Count(); i++)
             {
-                tf = question.Where(d => d == terms[i]).Count();
-                questionIDF.Add(tf);
+                queryIDF.Add(query.Where(d => d == terms[i]).Count());
             }
 
-            max = FindMax(questionIDF);
-            if (max > 0)
+            if (queryIDF.Max() > 0)
             {
                 for (var i = 0; i < terms.Count(); i++)
                 {
-                    if(termsIDF[i]>0)
+                    if (termsIDF[i] > 0)
                     {
-                        questionIDF[i] = (questionIDF[i] / max) * termsIDF[i];
+                        queryIDF[i] = (queryIDF[i] / queryIDF.Max()) * termsIDF[i];
                     }
                     else
                     {
-                        questionIDF[i] = 0;
+                        queryIDF[i] = 0;
                     }
                 }
             }
-
-
         }
 
         public List<double> CalculateSimilarity()
         {
             CalculateVectors();
             var similarityVector = new List<double>();
-            var QuestionVectorLength = CalculateVectorLength(questionIDF);
+            var queryVectorLength = CalculateVectorLength(queryIDF);
 
             foreach (var documentIDF in documentsIDF)
             {
-                double numerator = 0.0;
-                double denominator = QuestionVectorLength * CalculateVectorLength(documentIDF);
-                for (int i = 0; i < questionIDF.Count; i++)
+                var numerator = 0.0;
+                var denominator = queryVectorLength * CalculateVectorLength(documentIDF);
+                for (int i = 0; i < queryIDF.Count; i++)
                 {
-                    numerator += questionIDF[i] * documentIDF[i];
+                    numerator += queryIDF[i] * documentIDF[i];
                 }
                 var similarity = 0.0;
                 if (denominator != 0.0)
                 {
                     similarity = numerator / denominator;
                 }
-
                 similarityVector.Add(similarity);
             }
             return similarityVector;
@@ -141,7 +116,6 @@ namespace DocSearch
             double result = 0.0;
             for (int i = 0; i < vector.Count; i++)
             {
-                //result += Math.Pow(vector[i], 2.0);
                 result += vector[i] * vector[i];
             }
             return Math.Sqrt(result);

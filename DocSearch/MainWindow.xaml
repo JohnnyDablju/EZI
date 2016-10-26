@@ -16,9 +16,9 @@
         <Button x:Name="TermsPreviewButton" Content="Preview" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="265,118,0,0" IsEnabled="False" Click="TermsPreviewButton_Click"/>
         <Button x:Name="DocumentsPreviewButton" Content="Preview" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="265,206,0,0" IsEnabled="False" Click="DocumentsPreviewButton_Click"/>
         <Button x:Name="AnalyseButton" Content="Analyse" HorizontalAlignment="Left" Margin="265,330,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.133,-0.324" Click="AnalyseButton_Click"/>
-        <TextBox x:Name="PreviewTextBox" HorizontalAlignment="Left" Height="340" TextWrapping="Wrap" VerticalAlignment="Top" Width="330" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="355,10,0,0"/>
-        <TextBox x:Name="questionTextBox" HorizontalAlignment="Left" Height="23" Margin="10,36,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="330" TextChanged="questionTextBox_TextChanged"/>
-        <Label x:Name="Question" Content="Label" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="MainTextBox" HorizontalAlignment="Left" Height="340" TextWrapping="Wrap" VerticalAlignment="Top" Width="330" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="355,10,0,0"/>
+        <TextBox x:Name="QueryTextBox" HorizontalAlignment="Left" Height="23" Margin="10,36,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="330"/>
+        <Label x:Name="QueryLabel" Content="Query" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
 
 
     </Grid>

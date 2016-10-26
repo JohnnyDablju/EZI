@@ -50,11 +50,11 @@ namespace DocSearch
 
         private void AnalyseButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!String.IsNullOrWhiteSpace(TermsTextBox.Text) && !String.IsNullOrWhiteSpace(DocumentsTextBox.Text) && !String.IsNullOrWhiteSpace(questionTextBox.Text))
+            if (!String.IsNullOrWhiteSpace(TermsTextBox.Text) && !String.IsNullOrWhiteSpace(DocumentsTextBox.Text) && !String.IsNullOrWhiteSpace(QueryTextBox.Text))
             {
-                controller.LoadQuestion(questionTextBox.Text);
-                PreviewTextBox.Text = String.Empty;
-                PreviewTextBox.Text = controller.GetDocumentsSimilarity();
+                controller.LoadQuery(QueryTextBox.Text);
+                MainTextBox.Text = String.Empty;
+                MainTextBox.Text = controller.GetDocumentsSimilarity();
             }
             else
             {
@@ -64,17 +64,12 @@ namespace DocSearch
 
         private void TermsPreviewButton_Click(object sender, RoutedEventArgs e)
         {
-            PreviewTextBox.Text = controller.GetTermsPreview();
+            MainTextBox.Text = controller.GetTermsPreview();
         }
 
         private void DocumentsPreviewButton_Click(object sender, RoutedEventArgs e)
         {
-            PreviewTextBox.Text = controller.GetDocumentsPreview();
-        }
-
-        private void questionTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-
+            MainTextBox.Text = controller.GetDocumentsPreview();
         }
     }
 }
