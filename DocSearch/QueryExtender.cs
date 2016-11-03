@@ -16,7 +16,7 @@ namespace DocSearch
 
         public QueryExtender()
         {
-            wordNetEngine = new WordNetEngine(WordNetPath, false);
+            wordNetEngine = new WordNetEngine(WordNetPath, true);
             relations = new List<WordNetEngine.SynSetRelation> {
                 WordNetEngine.SynSetRelation.Hypernym,
                 WordNetEngine.SynSetRelation.SimilarTo,
@@ -71,14 +71,30 @@ namespace DocSearch
                 }
                 int i = 0;
                 int j = path.Count - 1;
-                while ((i++ <= path.Count / 2) && (j-- >= i))
+                // take one from begininng, one from the end; at most 4
+                while ((i++ <= path.Count / 2) && (j-- >= i) && i < 2 && (resultSet.Count <= 10))
                 {
+                    
+                    // at most 2 synonyms
+                    for (var k = 0; k < path[i].Words.Count && k < 2; k++)
+                    {
+                        for (var l = 0; l < path[j].Words.Count && l < 2; l++)
+                        {
+                            var result = new List<string>();
+                            result.Add(path[i].Words[k]);
+                            result.Add(path[j].Words[l]);
+                            result.AddRange(words);
+                            resultSet.Add(String.Join(" ", result.OrderBy(s => s).Distinct()));
+                            resultSet = resultSet.Distinct().ToList();
+                        }
+                    }
+                    /*
                     var result = new List<string>();
                     result.Add(path[i].Words.First());
                     result.Add(path[j].Words.First());
                     result.AddRange(words);
                     resultSet.Add(String.Join(" ", result.OrderBy(x => x).Distinct()));
-                    resultSet = resultSet.Distinct().ToList();
+                    resultSet = resultSet.Distinct().ToList();*/
                 }
             }
             return resultSet;
