@@ -10,6 +10,7 @@ namespace DocSearch
     class Controller
     {
         PorterStemmer stemmer;
+        QueryExtender queryExtender;
         TFIDF tfidf;
         List<string> terms;
         List<Tuple<string, List<string>>> documents;
@@ -17,7 +18,8 @@ namespace DocSearch
 
         public Controller()
         {
-            stemmer = new PorterStemmer();            
+            stemmer = new PorterStemmer();
+            queryExtender = new QueryExtender();        
         }
 
         private string CleanAndStemm(string word)
@@ -44,6 +46,16 @@ namespace DocSearch
                     + "\n\n-----------\n\n";
             }
             return preview;
+        }
+
+        public string GetQueryExtensions(string query)
+        {
+            var result = "";
+            foreach (var extension in queryExtender.Get(query))
+            {
+                result += extension + "\n";
+            }
+            return result;
         }
 
         public void LoadTerms(string path)

@@ -35,6 +35,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LAIR.Collections, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WordNetAPI\bin\Debug\LAIR.Collections.dll</HintPath>
+    </Reference>
+    <Reference Include="LAIR.ResourceAPIs.WordNet">
+      <HintPath>..\WordNetAPI\bin\Debug\LAIR.ResourceAPIs.WordNet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -55,10 +62,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="IOHandler.cs" />
+    <Compile Include="QueryExtender.cs" />
     <Compile Include="TFIDF.cs" />
-    <Compile Include="WordNet\SimilarityModel.cs" />
-    <Compile Include="WordNet\SynSet.cs" />
-    <Compile Include="WordNet\WordNetEngine.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

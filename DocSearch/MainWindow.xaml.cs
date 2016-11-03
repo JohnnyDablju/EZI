@@ -53,7 +53,6 @@ namespace DocSearch
             if (!String.IsNullOrWhiteSpace(TermsTextBox.Text) && !String.IsNullOrWhiteSpace(DocumentsTextBox.Text) && !String.IsNullOrWhiteSpace(QueryTextBox.Text))
             {
                 controller.LoadQuery(QueryTextBox.Text);
-                MainTextBox.Text = String.Empty;
                 MainTextBox.Text = controller.GetDocumentsSimilarity();
             }
             else
@@ -70,6 +69,11 @@ namespace DocSearch
         private void DocumentsPreviewButton_Click(object sender, RoutedEventArgs e)
         {
             MainTextBox.Text = controller.GetDocumentsPreview();
+        }
+
+        private void ExtensionsButton_Click(object sender, RoutedEventArgs e)
+        {
+            MainTextBox.Text = controller.GetQueryExtensions(QueryTextBox.Text);
         }
     }
 }
