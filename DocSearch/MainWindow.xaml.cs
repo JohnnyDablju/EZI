@@ -57,7 +57,7 @@ namespace DocSearch
             }
             else
             {
-                MessageBox.Show("Please load question, documents and terms first!");
+                MessageBox.Show("Please provide query, load documents and terms!");
             }
         }
 
@@ -73,7 +73,34 @@ namespace DocSearch
 
         private void ExtensionsButton_Click(object sender, RoutedEventArgs e)
         {
-            MainTextBox.Text = controller.GetQueryExtensions(QueryTextBox.Text);
+            if (!String.IsNullOrWhiteSpace(QueryTextBox.Text))
+            {
+                MainTextBox.Text = controller.GetQueryExtensions(QueryTextBox.Text);
+            }
+            else
+            {
+                MessageBox.Show("Please provide query!");
+            }
+        }
+
+        private void KmeansButton_Click(object sender, RoutedEventArgs e)
+        {
+            int seed, iterations;
+            if (int.TryParse(SeedTextBox.Text, out seed) && int.TryParse(IterationsTextBox.Text, out iterations))
+            {
+                if (!String.IsNullOrWhiteSpace(DocumentsTextBox.Text) && !String.IsNullOrWhiteSpace(QueryTextBox.Text))
+                {
+
+                }
+                else
+                {
+                    MessageBox.Show("Please load documents and terms!");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please provide valid seed and iterations values!");
+            }
         }
     }
 }

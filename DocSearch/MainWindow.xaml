@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DocSearch"
         mc:Ignorable="d"
-        Title="MainWindow" Height="400" Width="700">
+        Title="MainWindow" Height="414" Width="700">
     <Grid>
         <TextBox x:Name="TermsTextBox" HorizontalAlignment="Left" Height="23" Margin="10,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="330" IsEnabled="False"/>
         <TextBox x:Name="DocumentsTextBox" HorizontalAlignment="Left" Height="23" Margin="10,197,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="330" IsEnabled="False"/>
@@ -15,12 +15,15 @@
         <Button x:Name="DocumentsLoadButton" Content="Load file" HorizontalAlignment="Left" Margin="185,229,0,0" VerticalAlignment="Top" Width="75" Click="DocumentsLoadButton_Click"/>
         <Button x:Name="TermsPreviewButton" Content="Preview" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="265,141,0,0" IsEnabled="False" Click="TermsPreviewButton_Click"/>
         <Button x:Name="DocumentsPreviewButton" Content="Preview" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="265,229,0,0" IsEnabled="False" Click="DocumentsPreviewButton_Click"/>
-        <Button x:Name="AnalyseButton" Content="Analyse" HorizontalAlignment="Left" Margin="265,330,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.133,-0.324" Click="AnalyseButton_Click"/>
-        <TextBox x:Name="MainTextBox" HorizontalAlignment="Left" Height="340" TextWrapping="Wrap" VerticalAlignment="Top" Width="330" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="355,10,0,0"/>
+        <Button x:Name="AnalyseButton" Content="Analyse" HorizontalAlignment="Left" Margin="265,328,0,0" VerticalAlignment="Top" Width="75" RenderTransformOrigin="-0.133,-0.324" Click="AnalyseButton_Click"/>
+        <TextBox x:Name="MainTextBox" HorizontalAlignment="Left" Height="366" TextWrapping="Wrap" VerticalAlignment="Top" Width="330" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="355,10,0,0"/>
         <TextBox x:Name="QueryTextBox" HorizontalAlignment="Left" Height="23" Margin="10,36,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="330"/>
         <Label x:Name="QueryLabel" Content="Query" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
         <Button x:Name="ExtensionsButton" Content="Extensions" HorizontalAlignment="Left" Margin="265,64,0,0" VerticalAlignment="Top" Width="75" Click="ExtensionsButton_Click"/>
-
-
+        <Label x:Name="KmeansLabel" Content="K-means" HorizontalAlignment="Left" Margin="10,300,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="TfidfLabel" Content="TF/IDF" HorizontalAlignment="Left" Margin="265,300,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="SeedTextBox" HorizontalAlignment="Left" Height="23" Margin="10,328,0,0" TextWrapping="Wrap" Text="Seed" VerticalAlignment="Top" Width="75"/>
+        <TextBox x:Name="IterationsTextBox" HorizontalAlignment="Left" Height="23" Margin="90,328,0,0" TextWrapping="Wrap" Text="Iterations" VerticalAlignment="Top" Width="75"/>
+        <Button x:Name="KmeansButton" Content="Group" HorizontalAlignment="Left" Margin="10,356,0,0" VerticalAlignment="Top" Width="75" Click="KmeansButton_Click"/>
     </Grid>
 </Window>

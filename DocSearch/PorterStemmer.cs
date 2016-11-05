@@ -4,6 +4,13 @@ namespace DocSearch
 {
     class PorterStemmer
     {
+        public string CleanAndStemm(string word)
+        {
+            word = word.ToLower().Trim(new Char[] { ',', '.', ';', ':', '(', ')', '|', '&', '!', '-' });
+            word = StemWord(word);
+            return word;
+        }
+
         // The passed in word turned into a char array. 
         // Quicker to use to rebuilding strings each time a change is made.
         private char[] wordArray;

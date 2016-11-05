@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
 
 namespace DocSearch
 {
@@ -11,6 +8,7 @@ namespace DocSearch
     {
         PorterStemmer stemmer;
         QueryExtender queryExtender;
+        IOHandler ioHandler;
         TFIDF tfidf;
         List<string> terms;
         List<Tuple<string, List<string>>> documents;
@@ -19,14 +17,8 @@ namespace DocSearch
         public Controller()
         {
             stemmer = new PorterStemmer();
-            queryExtender = new QueryExtender();        
-        }
-
-        private string CleanAndStemm(string word)
-        {
-            word = word.ToLower().Trim(new Char[] { ',', '.', ';', ':', '(', ')', '|', '&', '!', '-' });
-            word = stemmer.StemWord(word);
-            return word;
+            queryExtender = new QueryExtender();
+            ioHandler = new IOHandler();        
         }
 
         public string GetTermsPreview()
@@ -53,74 +45,23 @@ namespace DocSearch
             var result = "";
             foreach (var extension in queryExtender.Get(query))
             {
-                result += extension + "\n";
+                result += extension + "\n\n";
             }
             return result;
         }
 
-        public void LoadTerms(string path)
-        {
-            terms = new List<string>();
-            using (var sr = new StreamReader(path))
-            {
-                while (!sr.EndOfStream)
-                {
-                    var word = sr.ReadLine();
-                    // applying stemming
-                    word = CleanAndStemm(word);
-                    if (!String.IsNullOrWhiteSpace(word))
-                    {
-                        terms.Add(word);
-                    }
-                }
-            }
-        }
-
-        public void LoadQuery(string query)
-        {
-            this.query = new List<string>();
-            this.query = query.Split(' ').Select(q => CleanAndStemm(q)).ToList();
-        }
-
-        public void LoadDocuments(string path)
-        {
-            documents = new List<Tuple<string, List<string>>>();
-            using (var sr = new StreamReader(path))
-            {
-                var document = new List<string>();
-                var title = "";
-                while (!sr.EndOfStream)
-                {
-                    var line = sr.ReadLine();
-                    if (line != "")
-                    {
-                        if (document.Count == 0)
-                        {
-                            title = line;
-                        }
-                        var words = line.Split(' ').ToList();
-                        // applying stemming
-                        foreach (var word in words)
-                        {
-                            var stemmedWord = CleanAndStemm(word);
-                            if (!String.IsNullOrWhiteSpace(stemmedWord))
-                            {
-                                document.Add(stemmedWord);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        documents.Add(new Tuple<string, List<string>>(title, document));
-                        document = new List<string>();
-                    }
-                }
-            }
-        }
-
         public string GetDocumentsSimilarity()
         {
-            var rank = CalculateDocumentsSimilarity();
+            tfidf = new TFIDF(terms, documents, query);
+            var similarity = tfidf.CalculateSimilarity();
+
+            var rank = new List<Tuple<string, double>>();
+            for (int i = 0; i < documents.Count; i++)
+            {
+                rank.Add(new Tuple<string, double>(documents[i].Item1, similarity[i]));
+            }
+            rank = rank.OrderByDescending(doc => doc.Item2).ToList();
+
             var result = "";
             foreach (var record in rank)
             {
@@ -129,17 +70,20 @@ namespace DocSearch
             return result;
         }
 
-        private List<Tuple<string, double>> CalculateDocumentsSimilarity()
+        public void LoadQuery(string query)
         {
-            tfidf = new TFIDF(terms, documents, query);
-            var similarity = tfidf.CalculateSimilarity();
+            this.query = new List<string>();
+            this.query = query.Split(' ').Select(q => stemmer.CleanAndStemm(q)).ToList();
+        }
 
-            var documentsRank = new List<Tuple<string, double>>();
-            for (int i = 0; i < documents.Count; i++)
-            {
-                documentsRank.Add(new Tuple<string, double>(documents[i].Item1, similarity[i]));
-            }
-            return documentsRank.OrderByDescending(doc => doc.Item2).ToList();
+        public void LoadTerms(string path)
+        {
+            terms = ioHandler.LoadTerms(path, stemmer);
+        }
+
+        public void LoadDocuments(string path)
+        {
+            documents = ioHandler.LoadDocuments(path, stemmer);
         }
     }
 }
