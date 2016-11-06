@@ -63,6 +63,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="IOHandler.cs" />
+    <Compile Include="KMeans.cs" />
     <Compile Include="QueryExtender.cs" />
     <Compile Include="TFIDF.cs" />
     <Page Include="MainWindow.xaml">

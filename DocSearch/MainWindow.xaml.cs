@@ -88,9 +88,9 @@ namespace DocSearch
             int seed, iterations;
             if (int.TryParse(SeedTextBox.Text, out seed) && int.TryParse(IterationsTextBox.Text, out iterations))
             {
-                if (!String.IsNullOrWhiteSpace(DocumentsTextBox.Text) && !String.IsNullOrWhiteSpace(QueryTextBox.Text))
+                if (!String.IsNullOrWhiteSpace(TermsTextBox.Text) && !String.IsNullOrWhiteSpace(DocumentsTextBox.Text))
                 {
-
+                    MainTextBox.Text = controller.GetGroups(seed, iterations);
                 }
                 else
                 {

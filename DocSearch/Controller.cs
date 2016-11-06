@@ -6,13 +6,15 @@ namespace DocSearch
 {
     class Controller
     {
-        PorterStemmer stemmer;
-        QueryExtender queryExtender;
-        IOHandler ioHandler;
-        TFIDF tfidf;
-        List<string> terms;
-        List<Tuple<string, List<string>>> documents;
-        List<string> query;
+        private PorterStemmer stemmer;
+        private QueryExtender queryExtender;
+        private IOHandler ioHandler;
+        private TFIDF tfidf;
+        private KMeans kMeans;
+
+        private List<string> terms;
+        private List<Tuple<string, List<string>>> documents;
+        private List<string> query;
 
         public Controller()
         {
@@ -53,7 +55,7 @@ namespace DocSearch
         public string GetDocumentsSimilarity()
         {
             tfidf = new TFIDF(terms, documents, query);
-            var similarity = tfidf.CalculateSimilarity();
+            var similarity = tfidf.GetDocumentQuery();
 
             var rank = new List<Tuple<string, double>>();
             for (int i = 0; i < documents.Count; i++)
@@ -66,6 +68,25 @@ namespace DocSearch
             foreach (var record in rank)
             {
                 result += record.Item2 + "\n" + record.Item1 + "\n\n";
+            }
+            return result;
+        }
+
+        public string GetGroups(int seed, int iterations)
+        {
+            tfidf = new TFIDF(terms, documents);
+            var similarityMatrix = tfidf.GetDocumentTerm();
+            kMeans = new KMeans(similarityMatrix);
+            var groups = kMeans.GetGroups(seed, iterations);
+            var result = "";
+            for (int i = 0; i < seed; i++)
+            {
+                result += "GROUP #" + (i + 1).ToString() + "\n";
+                foreach (var document in groups[i])
+                {
+                    result += documents[document].Item1 + "\n";
+                }
+                result += "\n\n";
             }
             return result;
         }

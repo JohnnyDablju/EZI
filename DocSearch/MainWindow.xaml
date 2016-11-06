@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DocSearch"
         mc:Ignorable="d"
-        Title="MainWindow" Height="414" Width="700">
+        Title="MainWindow" Height="433" Width="700">
     <Grid>
         <TextBox x:Name="TermsTextBox" HorizontalAlignment="Left" Height="23" Margin="10,113,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="330" IsEnabled="False"/>
         <TextBox x:Name="DocumentsTextBox" HorizontalAlignment="Left" Height="23" Margin="10,197,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="330" IsEnabled="False"/>
