@@ -15,17 +15,22 @@ namespace DocSearch
         private List<string> query;
         private List<double> queryIDF;
 
-        public TFIDF(List<string> terms, List<Tuple<string, List<string>>> documents, List<string> question)
+        public TFIDF(List<string> terms, List<Tuple<string, List<string>>> documents, List<string> query)
+            : this(terms, documents)
         {
-            this.terms = terms;
-            this.documents = documents.Select(d => d.Item2).ToList();
-            this.query = question;
-            termsIDF = new List<double>();
-            documentsIDF = new List<List<double>>();
+            this.query = query;
             queryIDF = new List<double>();
         }
 
-        private void CalculateVectors()
+        public TFIDF(List<string> terms, List<Tuple<string, List<string>>> documents)
+        {
+            this.terms = terms;
+            this.documents = documents.Select(d => d.Item2).ToList();
+            termsIDF = new List<double>();
+            documentsIDF = new List<List<double>>();
+        }
+
+        private void CalculateTermsIdf()
         {
             foreach (var term in terms)
             {
@@ -39,7 +44,10 @@ namespace DocSearch
                     termsIDF.Add(0);
                 }
             }
+        }
 
+        private void CalculateDocumentsIdf()
+        {
             foreach (var document in documents)
             {
                 var documentIDF = new List<double>();
@@ -62,10 +70,13 @@ namespace DocSearch
                         }
                     }
                 }
-                
+
                 documentsIDF.Add(documentIDF);
             }
+        }
 
+        private void CalculateQueryIdf()
+        {
             for (var i = 0; i < terms.Count(); i++)
             {
                 queryIDF.Add(query.Where(d => d == terms[i]).Count());
@@ -87,9 +98,22 @@ namespace DocSearch
             }
         }
 
-        public List<double> CalculateSimilarity()
+        private double CalculateVectorLength(List<double> vector)
         {
-            CalculateVectors();
+            double result = 0.0;
+            for (int i = 0; i < vector.Count; i++)
+            {
+                result += vector[i] * vector[i];
+            }
+            return Math.Sqrt(result);
+        }
+
+        public List<double> GetDocumentQuery()
+        {
+            CalculateTermsIdf();
+            CalculateDocumentsIdf();
+            CalculateQueryIdf();
+
             var similarityVector = new List<double>();
             var queryVectorLength = CalculateVectorLength(queryIDF);
 
@@ -111,14 +135,11 @@ namespace DocSearch
             return similarityVector;
         }
 
-        private double CalculateVectorLength(List<double> vector)
+        public List<List<double>> GetDocumentTerm()
         {
-            double result = 0.0;
-            for (int i = 0; i < vector.Count; i++)
-            {
-                result += vector[i] * vector[i];
-            }
-            return Math.Sqrt(result);
+            CalculateTermsIdf();
+            CalculateDocumentsIdf();
+            return documentsIDF;
         }
     }
 }
