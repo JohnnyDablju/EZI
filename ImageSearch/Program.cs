@@ -20,6 +20,7 @@ namespace ImageSearch
                 {
                     Console.WriteLine(result);
                 }
+                Console.WriteLine();
             }
         }
     }

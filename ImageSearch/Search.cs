@@ -90,7 +90,7 @@ namespace ImageSearch
         private List<Metric> CalculateAggregatedDistances(List<Metric> distances)
         {
             var aggregatedDistances = new List<Metric>();
-            foreach (var fileName in distances.Select(d => d.FileName).ToList())
+            foreach (var fileName in distances.Select(d => d.FileName).Distinct().ToList())
             {
                 var imageDistances = distances.Where(d => d.FileName == fileName).ToList();
                 var distance = 0.0;
@@ -129,7 +129,7 @@ namespace ImageSearch
         private List<Metric> CalculateSimilarities(List<Metric> distances)
         {
             var max = distances.Max(d => d.Value);
-            var min = distances.Min(d => d.Value);//Where(d => d.FileName == fileName).Select(d => d.Value).First();
+            var min = 0;
             var a = 1 / (min - max);
             var b = -(max / (min - max));
             var similarities = new List<Metric>();
