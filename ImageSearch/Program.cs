@@ -16,6 +16,15 @@ namespace ImageSearch
             );
             controller.LoadFeatures();
             controller.NormalizeFeatures();
+            while (true)
+            {
+                var query = Console.ReadLine();
+                var results = controller.Search(query);
+                foreach (var result in results)
+                {
+                    Console.WriteLine(result);
+                }
+            }
         }
     }
 }

@@ -9,8 +9,6 @@ namespace ImageSearch
 {
     class Controller
     {
-        public enum Aggregations { min, max, ave }
-
         private List<Feature> features;
         private string featuresPath;
         private string imagesPath;
@@ -62,6 +60,12 @@ namespace ImageSearch
                     }
                 }
             }
+        }
+
+        public List<string> Search(string query)
+        {
+            var search = new Search(query);
+            return search.GetResults(features, 12);
         }
     }
 }
