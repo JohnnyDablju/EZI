@@ -15,6 +15,7 @@ namespace ImageSearch
         {
             this.featuresPath = featuresPath;
             this.imagesPath = imagesPath;
+            Feature.StandardDeviations = new Dictionary<Feature.FeatureName, List<double>>();
         }
 
         public void LoadFeatures()
@@ -47,16 +48,19 @@ namespace ImageSearch
         {
             foreach (var featureName in Enum.GetValues(typeof(Feature.FeatureName)))
             {
-                var feature = features.Where(f => f.Name == (Feature.FeatureName)featureName).ToList(); 
+                var feature = features.Where(f => f.Name == (Feature.FeatureName)featureName).ToList();
+                var standardDeviations = new List<double>();
                 for (int i = 0; i < feature[0].Ordinates.Count; i++)
                 {
                     var average = feature.Average(f => f.Ordinates[i]);
                     var standardDeviation = Math.Sqrt(feature.Sum(f => Math.Pow(average - f.Ordinates[i], 2.0)) / feature.Count);
+                    standardDeviations.Add(standardDeviation);
                     foreach (var file in feature)
                     {
                         file.Ordinates[i] = (file.Ordinates[i] - average) / standardDeviation;
                     }
                 }
+                Feature.StandardDeviations.Add((Feature.FeatureName)featureName, standardDeviations);
             }
         }
 

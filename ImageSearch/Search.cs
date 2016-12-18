@@ -77,11 +77,11 @@ namespace ImageSearch
                     .ToList()
                 );
                 distances.AddRange(CalculateDistances(
+                    Feature.StandardDeviations[featureName],
                     imageOrdinates,
                     features
                         .Where(f => f.Name == featureName)
-                        .ToList()
-                    )
+                        .ToList())
                 );
             }
             return distances;
@@ -144,7 +144,7 @@ namespace ImageSearch
             return similarities;
         }
 
-        private List<Metric> CalculateDistances(List<double> ordinates, List<Feature> features)
+        private List<Metric> CalculateDistances(List<double> standardDeviations, List<double> ordinates, List<Feature> features)
         {
             var distances = new List<Metric>();
             foreach (var file in features)
@@ -152,7 +152,7 @@ namespace ImageSearch
                 var distance = 0.0;
                 for (int i = 0; i < ordinates.Count; i++)
                 {
-                    distance += Math.Abs(ordinates[i] - file.Ordinates[i]);
+                    distance += Math.Abs(ordinates[i] - file.Ordinates[i]) / standardDeviations[i];
                 }
                 distances.Add(new Metric
                 {
